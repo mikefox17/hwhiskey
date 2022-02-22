@@ -1,4 +1,13 @@
+import Nav from './components/Nav'
+
 const App = () => {
-    return <div>App</div>
+    return (
+        <>
+            <Nav />
+            <div className='container'>
+                <h1>hWhiskey</h1>
+            </div>
+        </>
+    )
 }
 export default App

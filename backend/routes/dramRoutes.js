@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const { protect } = require('../middleware/authMiddleware')
 
 const {
     getDram,
@@ -9,7 +10,11 @@ const {
     deleteDram,
 } = require('../controllers/dramController')
 
-router.route('/').get(getAllDrams).post(addDram)
-router.route('/:id').get(getDram).put(updateDram).delete(deleteDram)
+router.route('/').get(protect, getAllDrams).post(protect, addDram)
+router
+    .route('/:id')
+    .get(getDram)
+    .put(protect, updateDram)
+    .delete(protect, deleteDram)
 
 module.exports = router

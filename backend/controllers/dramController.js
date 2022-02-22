@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const Dram = require('../models/dramModel')
-
+const User = require('../models/userModel')
 //@desc    Get single dram
 //@route   GET /api/drams/:id
 //@access  Public
@@ -19,7 +19,7 @@ const getDram = asyncHandler(async (req, res) => {
 //@route    GET /api/drams
 //@access   Public
 const getAllDrams = asyncHandler(async (req, res) => {
-    const drams = await Dram.find()
+    const drams = await Dram.find({ user: req.user.id })
     res.status(200).json(drams)
 })
 
@@ -32,7 +32,8 @@ const addDram = asyncHandler(async (req, res) => {
         throw new Error('text is required')
     }
 
-    const dram = await Dram.create(req.body)
+    const dram = await Dram.create({ ...req.body, user: req.user.id })
+
     res.status(200).json(dram)
     console.log(req.body.text)
 })
@@ -46,6 +47,18 @@ const updateDram = asyncHandler(async (req, res) => {
     if (!dram) {
         res.status(404)
         throw new Error('Dram not found')
+    }
+
+    const user = await User.findById(req.user.id)
+
+    if (!user) {
+        res.status(401)
+        throw new Error('User not found')
+    }
+
+    if (global.user.toString() !== user.id) {
+        res.status(401)
+        throw new Error('User not authorized')
     }
 
     const updatedDram = await Dram.findByIdAndUpdate(req.params.id, req.body, {
@@ -64,6 +77,18 @@ const deleteDram = asyncHandler(async (req, res) => {
     if (!dram) {
         res.status(400)
         throw new Error('Dram not found')
+    }
+
+    const user = await User.findById(req.user.id)
+
+    if (!user) {
+        res.status(401)
+        throw new Error('User not found')
+    }
+
+    if (global.user.toString() !== user.id) {
+        res.status(401)
+        throw new Error('User not authorized')
     }
 
     await dram.remove()
