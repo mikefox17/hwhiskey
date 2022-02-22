@@ -1,6 +1,15 @@
 const asyncHandler = require('express-async-handler')
 const Dram = require('../models/dramModel')
 const User = require('../models/userModel')
+
+//@desc   Get all drams
+//@route  GET /api/drams
+//@access Public
+const getAllDrams = asyncHandler(async (req, res, next) => {
+    const drams = await Dram.find()
+    res.status(200).json(drams)
+})
+
 //@desc    Get single dram
 //@route   GET /api/drams/:id
 //@access  Public
@@ -15,10 +24,10 @@ const getDram = asyncHandler(async (req, res) => {
     res.status(200).json(dram)
 })
 
-//@desc     get drams
-//@route    GET /api/drams
+//@desc     get all user drams
+//@route    GET /api/me-drams
 //@access   Public
-const getAllDrams = asyncHandler(async (req, res) => {
+const getAllUserDrams = asyncHandler(async (req, res) => {
     const drams = await Dram.find({ user: req.user.id })
     res.status(200).json(drams)
 })
@@ -96,8 +105,9 @@ const deleteDram = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
-    getDram,
     getAllDrams,
+    getDram,
+    getAllUserDrams,
     addDram,
     updateDram,
     deleteDram,

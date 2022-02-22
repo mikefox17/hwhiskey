@@ -5,7 +5,8 @@
     "main": "server.js",
     "scripts": {
         "start": "node backend/server.js",
-        "server": "nodemon backend/server.js"
+        "server": "nodemon backend/server.js",
+        "dev": "concurrently \"npm run server\" \"npm run client \""
     },
     "author": "Mike Fox",
     "license": "MIT",
