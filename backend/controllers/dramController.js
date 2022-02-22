@@ -1,15 +1,14 @@
 const asyncHandler = require('express-async-handler')
-
 const Dram = require('../models/dramModel')
 
 //@desc    Get single dram
 //@route   GET /api/drams/:id
 //@access  Public
-const getDram = asyncHandler(async (req, res, next) => {
+const getDram = asyncHandler(async (req, res) => {
     const dram = await Dram.findById(req.params.id)
 
     if (!dram) {
-        res.status(404)
+        res.status(400)
         throw new Error('Dram not found')
     }
 
@@ -23,20 +22,18 @@ const getAllDrams = asyncHandler(async (req, res) => {
     const drams = await Dram.find()
     res.status(200).json(drams)
 })
+
 //@desc     add a dram
 //@route    POST /api/drams
 //@access   Public
 const addDram = asyncHandler(async (req, res) => {
     if (!req.body) {
         res.status(400)
-
         throw new Error('text is required')
     }
 
     const dram = await Dram.create(req.body)
-
     res.status(200).json(dram)
-
     console.log(req.body.text)
 })
 
