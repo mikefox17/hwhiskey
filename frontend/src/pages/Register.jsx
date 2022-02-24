@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import axios from 'redaxios'
 
 const Register = () => {
@@ -7,7 +8,9 @@ const Register = () => {
         username: '',
         email: '',
         password: '',
+        password2: '',
     })
+
     const navigate = useNavigate()
 
     const [error, setError] = useState('')
@@ -18,6 +21,7 @@ const Register = () => {
 
     const handleSubmit = async e => {
         e.preventDefault()
+
         try {
             const url = 'http://localhost:5001/api/users'
             const { data: res } = await axios.post(url, data)
@@ -27,8 +31,16 @@ const Register = () => {
         } catch (error) {
             if (
                 error.response &&
-                error.response.status >= 400 &&
-                error.response.status <= 500
+                error.response.data &&
+                error.response.data.message
+            ) {
+                setError(error.response.data.message)
+            }
+
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message === 'Passwords do not match'
             ) {
                 setError(error.response.data.message)
             }
@@ -64,6 +76,14 @@ const Register = () => {
                                 name='password'
                                 onChange={handleChange}
                                 value={data.password}
+                                required
+                            />
+                            <input
+                                type='password'
+                                placeholder='Reenter Password'
+                                name='password2'
+                                onChange={handleChange}
+                                value={data.password2}
                                 required
                             />
 
