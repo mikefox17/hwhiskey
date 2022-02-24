@@ -5,7 +5,7 @@ const User = require('../models/userModel')
 //@desc   Get all drams
 //@route  GET /api/drams
 //@access Public
-const getAllDrams = asyncHandler(async (req, res, next) => {
+const getAllDrams = asyncHandler(async (req, res) => {
     const drams = await Dram.find()
     res.status(200).json(drams)
 })
