@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import axios from 'redaxios'
+import { UserContext } from '../UserContext'
 
 const Login = () => {
+    const [user, setUser] = useContext(UserContext)
     const [data, setData] = useState({
         email: '',
         password: '',
@@ -25,6 +27,7 @@ const Login = () => {
             const { data: res } = await axios.post(url, data)
             console.log(res)
             console.log(res.message)
+            localStorage.setItem('token', res.token)
             navigate('/')
         } catch (error) {
             if (

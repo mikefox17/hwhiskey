@@ -15,6 +15,9 @@ const Nav = () => {
                     <li>
                         <Link to='/'>Drams 🥃</Link>
                     </li>
+                    <li>
+                        <Link to='/review'>Reviews 📝</Link>
+                    </li>
                 </ul>
             </nav>
         </header>

@@ -8,9 +8,10 @@ import Nav from './components/Nav'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import Review from './pages/Review'
 import { DramProvider } from './dramContext'
 import { ToastContainer } from 'react-toastify'
-import { UserContext } from './UserContext'
+import { UserProvider } from './UserContext'
 
 const App = () => {
     const isLoggedIn = localStorage.getItem('token')
@@ -18,29 +19,23 @@ const App = () => {
     //use effect to make a post request to the backend to get the user data
 
     return (
-        <UserContext.Provider value='hello from context'>
+        <UserProvider>
             <DramProvider>
                 <ToastContainer />
                 <Router>
                     <div className='container'>
                         <Nav />
                         <Routes>
-                            {isLoggedIn ? (
-                                <Route path='/' element={<Dashboard />} />
-                            ) : (
-                                <>
-                                    <Route path='/login' element={<Login />} />
-                                    <Route
-                                        path='/register'
-                                        element={<Register />}
-                                    />
-                                </>
-                            )}
+                            <Route path='/' element={<Dashboard />} />
+                            <Route path='/review' element={<Review />} />
+
+                            <Route path='/login' element={<Login />} />
+                            <Route path='/register' element={<Register />} />
                         </Routes>
                     </div>
                 </Router>
             </DramProvider>
-        </UserContext.Provider>
+        </UserProvider>
     )
 }
 export default App
